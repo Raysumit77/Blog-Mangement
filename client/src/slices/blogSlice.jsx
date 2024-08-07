@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import BlogServices from "../services/blogs";
 
 const initialState = {
@@ -22,6 +22,14 @@ export const createBlog = createAsyncThunk(
   "blogs/createBlog",
   async (payload) => {
     const res = await BlogServices.create(payload);
+    return res.data;
+  }
+);
+
+export const changeStatus = createAsyncThunk(
+  "blog/changeStatus",
+  async (slug) => {
+    const res = await BlogServices.changeStatus(slug);
     return res.data;
   }
 );
