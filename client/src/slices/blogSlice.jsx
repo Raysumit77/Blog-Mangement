@@ -72,6 +72,22 @@ const blogSlice = createSlice({
       .addCase(createBlog.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(changeStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload?.data.slug);
+        const changedBlog = state.blogs.find(
+          (blog) => blog?.slug === action.payload?.data?.slug
+        );
+        changedBlog.status = action.payload?.data?.status;
+        state.blog = action.payload.data;
+      })
+      .addCase(changeStatus.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(changeStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });

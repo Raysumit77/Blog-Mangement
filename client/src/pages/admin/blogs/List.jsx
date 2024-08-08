@@ -58,6 +58,9 @@ export const AdminBlogs = () => {
                                   type='checkbox'
                                   role='switch'
                                   id='flexSwitchCheckDefault'
+                                  checked={
+                                    blog?.status === "published" ? true : false
+                                  }
                                   onChange={({ target }) => {
                                     // console.log(blog.slug);
                                     dispatch(changeStatus(blog?.slug));
