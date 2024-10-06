@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import BlogServices from "../services/blogs";
 
 const initialState = {
@@ -22,6 +22,14 @@ export const createBlog = createAsyncThunk(
   "blogs/createBlog",
   async (payload) => {
     const res = await BlogServices.create(payload);
+    return res.data;
+  }
+);
+
+export const changeStatus = createAsyncThunk(
+  "blog/changeStatus",
+  async (slug) => {
+    const res = await BlogServices.changeStatus(slug);
     return res.data;
   }
 );
@@ -62,6 +70,22 @@ const blogSlice = createSlice({
         state.loading = true;
       })
       .addCase(createBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(changeStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload?.data.slug);
+        const changedBlog = state.blogs.find(
+          (blog) => blog?.slug === action.payload?.data?.slug
+        );
+        changedBlog.status = action.payload?.data?.status;
+        state.blog = action.payload.data;
+      })
+      .addCase(changeStatus.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(changeStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
