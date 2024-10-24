@@ -19,7 +19,7 @@ export const AddBlog = () => {
     const formData = new FormData();
     formData.append("title", payload?.title);
     formData.append("content", payload?.content);
-    formData.append("pictureUrl", images[0]);
+    formData.append("pictureUrl", URL.createObjectURL(images[0]));
     dispatch(createBlog(formData));
     navigate("/admin/blogs");
   };

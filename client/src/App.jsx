@@ -9,7 +9,7 @@ import { ForgetPassword } from "./pages/ForgetPassword";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { VerifyFPassword } from "./pages/VerifyPassword";
+import { VerifyFPassword } from "./pages/VerifyFPassword";
 import { AdminBlogs } from "./pages/admin/blogs/List";
 import { AddBlog } from "./pages/admin/blogs/Add";
 import { BlogEdit } from "./pages/admin/blogs/Edit";

@@ -9,7 +9,7 @@ import { URLS } from "../constants";
 
 import Notify from "../components/Notify";
 
-export const VerifyFPassword = () => {
+export const VerifyDPassword = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [payload, setPayload] = useState({

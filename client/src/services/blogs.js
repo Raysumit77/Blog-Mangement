@@ -4,10 +4,9 @@ import { URLS } from "../constants";
 
 const create = (payload) => {
   return instance.post(URLS.GET_ONE_BLOG, payload, {
-    headers: { 
+    headers: {
       access_token: localStorage.getItem("access_token"),
       "Content-Type": "multipart/form-data",
-      
     },
   });
 };

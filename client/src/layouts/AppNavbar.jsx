@@ -1,6 +1,7 @@
 import { Navbar } from "react-bootstrap";
 import FavIcon32 from "../assets/logo/favicon-32x32.png";
 import { Link } from "react-router-dom";
+import { LogIn, Bookmark } from "lucide-react";
 
 import { useSelector } from "react-redux";
 
@@ -51,10 +52,10 @@ export const AppNavbar = () => {
           </ul>
           <div>
             <Link className="btn btn-outline-light m-1" to="/login">
-              <i className="fa fa-sign-in fa-lg"></i>
+              <LogIn />
             </Link>
             <Link className="btn btn-outline-light" to="/bookmark">
-              <i className="fa fa-bookmark fa-lg"></i> {quantity}
+              <Bookmark />
             </Link>
           </div>
         </div>

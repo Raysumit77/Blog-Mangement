@@ -1,72 +1,67 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import BlogServices from "../services/blogs";
+import instance from "../utils/api";
 
-const initialState = {
-  blogs: [],
-  blog: {},
-  total: 0,
-  currentPage: 1,
-  limit: 90,
-  error: "",
-  loading: false,
+import { URLS } from "../constants";
+
+const create = (payload) => {
+  return instance.post(URLS.GET_ONE_BLOG, payload, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
-export const listBlogs = createAsyncThunk(
-  "blogs/listBlogs",
-  async ({ limit, page }) => {
-    const res = await BlogServices.list(limit, page);
-    return res.data;
-  }
-);
-export const createBlog = createAsyncThunk(
-  "blogs/createBlog",
-  async (payload) => {
-    const res = await BlogServices.create(payload);
-    return res.data;
-  }
-);
-
-const blogSlice = createSlice({
-  name: "blogs",
-  initialState,
-  reducers: {
-    setCurrentPage: (state, action) => {
-      state.currentPage = action.payload;
+const list = (limit, page) => {
+  return instance.get(`${URLS.GET_ONE_BLOG}?page=${page}&limit=${limit}`, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
     },
-    setLimit: (state, action) => {
-      state.currentPage = 1;
-      state.limit = action.payload;
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(listBlogs.fulfilled, (state, action) => {
-        state.loading = false;
-        state.total = action.payload.data.total;
-        state.blogs = action.payload.data.data;
-      })
-      .addCase(listBlogs.pending, (state) => {
-        state.loading = true;
-        state.blogs = [];
-        state.total = 0;
-      })
-      .addCase(listBlogs.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(createBlog.fulfilled, (state, action) => {
-        state.loading = false;
-        state.blog = action.payload.data;
-      })
-      .addCase(createBlog.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(createBlog.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      });
-  },
-});
+  });
+};
 
-export const { setCurrentPage, setLimit } = blogSlice.actions;
-export const blogReducer = blogSlice.reducer;
+const getBySlug = (slug) => {
+  return instance.get(URLS.GET_ONE_BLOG.concat("/", slug), {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};
+
+const removeBlog = (slug) => {
+  return instance.delete(URLS.GET_ONE_BLOG.concat("/", slug), {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};
+
+const changeStatus = (slug) => {
+  return instance.patch(
+    URLS.GET_ONE_BLOG.concat("/", slug),
+    {},
+    {
+      headers: {
+        access_token: localStorage.getItem("access_token"),
+      },
+    }
+  );
+};
+
+const updateBlog = (slug, payload) => {
+  return instance.put(URLS.GET_ONE_BLOG.concat("/", slug), payload, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};
+
+const BlogServices = {
+  changeStatus,
+  create,
+  list,
+  getBySlug,
+  removeBlog,
+  updateBlog,
+};
+
+export default BlogServices;

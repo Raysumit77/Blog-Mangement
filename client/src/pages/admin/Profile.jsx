@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { myProfile, changePassword } from "../../slices/authSlice";
 import dateFormatter from "../../utils/date";
 import Notify from "../../components/Notify";
+import { Check } from "lucide-react";
 
 export const AdminProfile = () => {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ const Home = ({ profile }) => {
               <h5 className="card-title">
                 {profile?.name} &nbsp;
                 <Badge bg="success">
-                  <i className="fa fa-check "></i>
+                  <Check />
                 </Badge>
               </h5>
 
@@ -125,7 +126,7 @@ const ChangePW = ({ profile }) => {
           <input
             className="form-control"
             type="email"
-            placeholder="name@example.com"
+            placeholder=""
             value={payload?.email}
             disabled
           />

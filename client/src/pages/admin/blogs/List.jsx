@@ -1,18 +1,30 @@
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listBlogs } from "../../../slices/blogSlice";
+import { changeStatus, listBlogs, removeBlog } from "../../../slices/blogSlice";
 
 export const AdminBlogs = () => {
   const dispatch = useDispatch();
   const { blogs, currentPage, limit } = useSelector((state) => state.blogs);
 
+  const initFetch = useCallback(() => {
+    dispatch(listBlogs({ page: currentPage, limit }));
+  }, [dispatch, currentPage, limit]);
+
   useEffect(() => {
-    (() => {
-      dispatch(listBlogs({ page: currentPage, limit }));
-    })();
-  }, [currentPage, dispatch, limit]);
+    initFetch();
+  }, [initFetch]);
+
+  const handleRemove = async (e, slug) => {
+    e.preventDefault();
+    dispatch(removeBlog(slug));
+  };
+
+  const handleStatus = async (e, slug) => {
+    e.preventDefault();
+    dispatch(changeStatus(slug));
+  };
 
   return (
     <div className="col-md-12">
@@ -54,7 +66,8 @@ export const AdminBlogs = () => {
                                   className="form-check-input"
                                   type="checkbox"
                                   role="switch"
-                                  id="flexSwitchCheckDefault"
+                                  checked={blog?.status === "published"}
+                                  onChange={(e) => handleStatus(e, blog?.slug)}
                                 />
                                 <label className="form-check-label">
                                   Published
@@ -65,13 +78,19 @@ export const AdminBlogs = () => {
                           <td>
                             <ButtonToolbar>
                               <ButtonGroup className="me-2">
-                                <Button>
-                                  <i className="fa fa-eye">Edit</i>
-                                </Button>
+                                <Link
+                                  to={`/admin/blogs/${blog?.slug}`}
+                                  className="btn btn-primary"
+                                >
+                                  <i className="fa fa-eye"></i>
+                                </Link>
                               </ButtonGroup>
                               <ButtonGroup className="me-2">
-                                <Button className="btn btn-danger">
-                                  <i className="fa fa-trash">Delete</i>
+                                <Button
+                                  className="btn btn-danger"
+                                  onClick={(e) => handleRemove(e, blog?.slug)}
+                                >
+                                  <i className="fa fa-trash"></i>
                                 </Button>
                               </ButtonGroup>
                             </ButtonToolbar>
@@ -89,13 +108,11 @@ export const AdminBlogs = () => {
                 </tbody>
               </table>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="d-flex justify-content-center d-grid gap-2">
                 <ul className="pagination">
                   <select className="page-item">
-                    <option value="5" selected>
-                      5
-                    </option>
+                    <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="20">20</option>
                   </select>
@@ -130,7 +147,7 @@ export const AdminBlogs = () => {
                   </ul>
                 </nav>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
