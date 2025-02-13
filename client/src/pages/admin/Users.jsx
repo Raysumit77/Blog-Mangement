@@ -46,7 +46,7 @@ export const AdminUser = () => {
   );
 };
 
-const UserHome = ({ profile }) => {
+const UserHome = ({ user }) => {
   return (
     <>
       <div className="card">
@@ -73,7 +73,7 @@ const UserHome = ({ profile }) => {
   );
 };
 
-const UserChangePW = ({ profile }) => {
+const UserChangePW = ({ user  }) => {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.auth);
   const [payload, setPayload] = useState({
